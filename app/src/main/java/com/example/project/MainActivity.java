@@ -1,6 +1,6 @@
 package com.example.project;
 
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
 
     private AppleAdapter appleAdapter;
     private RecyclerView recyclerView;
+    private Intent intent;
+    private Gson gson;
 
     private final String JSON_URL = "https://mobprog.webug.se/json-api?login=a21oligu";
 
@@ -30,10 +32,13 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
         setSupportActionBar(toolbar);
 
         appleAdapter = new AppleAdapter(this, this);
+        gson = new Gson();
 
         recyclerView = findViewById(R.id.apple_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(appleAdapter);
+
+        intent = new Intent(this, DetailActivity.class).setAction(Intent.ACTION_SEND);
 
         JsonTask jsonTask = new JsonTask(this);
         jsonTask.execute(JSON_URL);
@@ -41,9 +46,7 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
 
     @Override
     public void onPostExecute(String json) {
-        Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<Apple>>() {}.getType();
-
         Log.d("Response", String.format("Got response from GET: %b", json != null));
         System.out.println(json);
 
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
 
     @Override
     public void onClick(Apple apple) {
-        System.out.println(apple.toString());
+        intent.putExtra("data", gson.toJson(apple));
+        startActivity(intent);
     }
 }
