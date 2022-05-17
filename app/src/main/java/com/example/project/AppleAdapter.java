@@ -85,31 +85,6 @@ public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
         }
     }
 
-    private class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
-        private ImageView image;
-
-        public ImageDownloader(ImageView view) {
-            this.image = view;
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... urls) {
-            try {
-                URL url = new URL(urls[0]);
-                Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                return bitmap;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            image.setImageBitmap(bitmap);
-        }
-    }
-
     public interface OnClickListener {
         void onClick(Apple apple);
     }
