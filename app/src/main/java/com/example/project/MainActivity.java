@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
     private AppleAdapter appleAdapter;
     private RecyclerView recyclerView;
     private Intent intent;
+    private Intent aboutIntent;
     private Gson gson;
 
     private final String JSON_URL = "https://mobprog.webug.se/json-api?login=a21oligu";
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
         recyclerView.setAdapter(appleAdapter);
 
         intent = new Intent(this, DetailActivity.class).setAction(Intent.ACTION_SEND);
+        aboutIntent = new Intent(this, AboutActivity.class).setAction(Intent.ACTION_SEND);
 
         JsonTask jsonTask = new JsonTask(this);
         jsonTask.execute(JSON_URL);
@@ -79,9 +81,16 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_about) {
-            Log.d("==>","Go to about activity");
-            return true;
+        switch (id) {
+            case R.id.action_about:
+                startActivity(aboutIntent);
+                return true;
+            case R.id.action_filter_az:
+                appleAdapter.filterApples("A_Z");
+                return true;
+            case R.id.action_filter_za:
+                appleAdapter.filterApples("Z_A");
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

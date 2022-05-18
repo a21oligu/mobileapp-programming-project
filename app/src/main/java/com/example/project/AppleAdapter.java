@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
 
@@ -85,15 +87,26 @@ public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
         }
     }
 
-    public void filterApples(Filter filter) {
+    public void filterApples(final String filter) {
+        Collections.sort(listOfApples, new Comparator<Apple>() {
 
+            @Override
+            public int compare(Apple apple1, Apple apple2) {
+                switch (filter) {
+                    case "A_Z":
+                        return apple1.getName().toLowerCase().compareTo(apple2.getName().toLowerCase());
+                    case "Z_A":
+                        return apple2.getName().toLowerCase().compareTo(apple1.getName().toLowerCase());
+                }
+
+                return 0;
+            }
+        });
+
+        notifyDataSetChanged();
     }
 
     public interface OnClickListener {
         void onClick(Apple apple);
-    }
-
-    public enum Filter {
-        A_Z, Z_A,
     }
 }
