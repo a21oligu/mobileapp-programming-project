@@ -3,6 +3,9 @@ package com.example.project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -63,5 +66,24 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
     public void onClick(Apple apple) {
         intent.putExtra("data", gson.toJson(apple));
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_about) {
+            Log.d("==>","Go to about activity");
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
