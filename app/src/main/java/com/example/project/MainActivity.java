@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
     private Intent intent;
     private Intent aboutIntent;
     private Gson gson;
+    private SharedPreferences sharedPreferences;
 
     private final String JSON_URL = "https://mobprog.webug.se/json-api?login=a21oligu";
 
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
         intent = new Intent(this, DetailActivity.class).setAction(Intent.ACTION_SEND);
         aboutIntent = new Intent(this, AboutActivity.class).setAction(Intent.ACTION_SEND);
 
+        sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+
         JsonTask jsonTask = new JsonTask(this);
         jsonTask.execute(JSON_URL);
     }
@@ -53,12 +57,14 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
     public void onPostExecute(String json) {
         Type type = new TypeToken<ArrayList<Apple>>() {}.getType();
         Log.d("Response", String.format("Got response from GET: %b", json != null));
-        System.out.println(json);
 
         try {
+            String filter = sharedPreferences.getString("filter", "default");
             ArrayList<Apple> newApples = gson.fromJson(json, type);
             appleAdapter.addApples(newApples);
-            appleAdapter.notifyDataSetChanged();
+
+            // Check if saved filter type, if true filter apples
+            if (filter != "default") appleAdapter.filterApples(filter);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,6 +83,10 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
         return true;
     }
 
+    private void saveFilter(String filter) {
+        sharedPreferences.edit().putString("filter", filter).apply();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -87,9 +97,11 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
                 return true;
             case R.id.action_filter_az:
                 appleAdapter.filterApples("A_Z");
+                saveFilter("A_Z");
                 return true;
             case R.id.action_filter_za:
                 appleAdapter.filterApples("Z_A");
+                saveFilter("Z_A");
                 return true;
         }
 

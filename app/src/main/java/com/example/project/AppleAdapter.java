@@ -82,6 +82,7 @@ public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
     public void addApples(ArrayList<Apple> apples) {
         try {
             listOfApples.addAll(apples);
+            notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
