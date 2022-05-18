@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -35,9 +34,13 @@ public class DetailActivity extends AppCompatActivity {
         if (extras.size() != 0) {
             String json = extras.getString("data");
             Type type = new TypeToken<Apple>() {}.getType();
+
             apple = gson.fromJson(json, type);
-            title.setText(apple.name);
-            new ImageDownloader(image).execute(apple.auxdata.img);
+            title.setText(apple.getName());
+            new ImageDownloader(image).execute(apple.getAuxdata().getImg());
+
+            System.out.println(apple.getAuxdata().getCharacteristics());
+            System.out.println(apple.getAuxdata().getColors());
         }
 
         if (getSupportActionBar() != null) {

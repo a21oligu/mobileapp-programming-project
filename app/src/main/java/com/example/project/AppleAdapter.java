@@ -38,9 +38,9 @@ public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull AppleAdapter.ViewHolder holder, int position) {
-        holder.getTextView().setText(listOfApples.get(position).name);
+        holder.getTextView().setText(listOfApples.get(position).getName());
         ImageView imageView = holder.getImage();
-        new ImageDownloader(imageView).execute(listOfApples.get(position).auxdata.img);
+        new ImageDownloader(imageView).execute(listOfApples.get(position).getAuxdata().getImg());
     }
 
     @Override
@@ -85,7 +85,15 @@ public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
         }
     }
 
+    public void filterApples(Filter filter) {
+
+    }
+
     public interface OnClickListener {
         void onClick(Apple apple);
+    }
+
+    public enum Filter {
+        A_Z, Z_A,
     }
 }
