@@ -24,7 +24,8 @@
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:id="@+id/detail_header">
 
         <ImageView
             android:layout_width="148dp"
@@ -42,17 +43,26 @@
 
     </LinearLayout>
 
-    <!--TextView
+    <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/detail_origin"
-        android:textSize="32sp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@id/detail_image"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-        app:layout_constraintBottom_toBottomOf="@id/detail_image"
-        android:gravity="center_vertical"
-        /-->
+        app:layout_constraintTop_toBottomOf="@id/detail_header"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/detail_characteristics"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_origin"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

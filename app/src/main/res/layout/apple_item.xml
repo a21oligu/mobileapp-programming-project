@@ -19,8 +19,9 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:textSize="24sp"
-        android:padding="8dp"
+        android:layout_marginStart="24dp"
         android:id="@+id/text_apple_name"/>
+
     <ImageView
         android:layout_height="24dp"
         android:layout_width="24dp"

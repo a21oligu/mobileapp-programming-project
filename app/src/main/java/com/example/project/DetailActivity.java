@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -18,6 +19,13 @@ public class DetailActivity extends AppCompatActivity {
     private Apple apple;
     private TextView title;
     private ImageView image;
+    private TextView origin;
+    private TextView characteristics;
+
+    private String arrayListToString(ArrayList<String> list) {
+        String listAsString = list.toString();
+        return listAsString.substring(1, listAsString.length() - 1);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +34,8 @@ public class DetailActivity extends AppCompatActivity {
 
         title = findViewById(R.id.detail_title);
         image = findViewById(R.id.detail_image);
+        origin = findViewById(R.id.detail_origin);
+        characteristics = findViewById(R.id.detail_characteristics);
 
         gson = new Gson();
 
@@ -37,10 +47,9 @@ public class DetailActivity extends AppCompatActivity {
 
             apple = gson.fromJson(json, type);
             title.setText(apple.getName());
+            origin.setText(String.format("\uD83D\uDCCD Origin: %s", apple.getLocation()));
+            characteristics.setText(String.format("\uD83D\uDCD3 Characteristics: %s", arrayListToString(apple.getAuxdata().getCharacteristics())));
             new ImageDownloader(image).execute(apple.getAuxdata().getImg());
-
-            System.out.println(apple.getAuxdata().getCharacteristics());
-            System.out.println(apple.getAuxdata().getColors());
         }
 
         if (getSupportActionBar() != null) {

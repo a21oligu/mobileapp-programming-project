@@ -40,9 +40,10 @@ public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull AppleAdapter.ViewHolder holder, int position) {
-        holder.getTextView().setText(listOfApples.get(position).getName());
+        Apple apple = listOfApples.get(position);
+        holder.getTextView().setText(apple.getName());
         ImageView imageView = holder.getImage();
-        new ImageDownloader(imageView).execute(listOfApples.get(position).getAuxdata().getImg());
+        new ImageDownloader(imageView).execute(apple.getAuxdata().getImg());
     }
 
     @Override
@@ -57,8 +58,8 @@ public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
-            textView = view.findViewById(R.id.text_apple_name);
-            image = view.findViewById(R.id.image_apple);
+            this.textView = view.findViewById(R.id.text_apple_name);
+            this.image = view.findViewById(R.id.image_apple);
         }
 
         public TextView getTextView() {
