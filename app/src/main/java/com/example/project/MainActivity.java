@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
     private Intent aboutIntent;
     private Gson gson;
     private SharedPreferences sharedPreferences;
+    private TextView textFilteringBy;
 
     private final String JSON_URL = "https://mobprog.webug.se/json-api?login=a21oligu";
 
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        textFilteringBy = findViewById(R.id.main_filtering_by);
+        textFilteringBy.setText("Filtering by: none");
 
         appleAdapter = new AppleAdapter(this, this);
         gson = new Gson();
@@ -68,7 +73,10 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
             appleAdapter.addApples(newApples);
 
             // Check if saved filter type, if true filter apples
-            if (!filterBy.equals("none")) appleAdapter.filterApples(filterType, filterBy);
+            if (!filterBy.equals("none")) {
+                appleAdapter.filterApples(filterType, filterBy);
+                textFilteringBy.setText(String.format("Filtering by: %s:%s", filterType, filterBy));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,6 +132,7 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
             public void onClick(DialogInterface dialog, int which) {
                 saveFilter(type, items[which]);
                 appleAdapter.filterApples(type, items[which]);
+                textFilteringBy.setText(String.format("Filtering by: %s:%s", type, items[which]));
             }
         });
 
