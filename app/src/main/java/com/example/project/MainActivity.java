@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
             case R.id.action_filter_none:
                 appleAdapter.filterApples("none", "");
                 saveFilter("none", "none");
+                textFilteringBy.setText("Filtering by: none");
                 return true;
             case R.id.action_filter_color:
                 showFilterDialog("Choose color", "color", new String[] {"red", "green", "yellow"});
