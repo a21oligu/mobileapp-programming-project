@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -21,6 +23,7 @@ public class DetailActivity extends AppCompatActivity {
     private ImageView image;
     private TextView origin;
     private TextView characteristics;
+    private TextView colors;
 
     private String arrayListToString(ArrayList<String> list) {
         String listAsString = list.toString();
@@ -35,6 +38,7 @@ public class DetailActivity extends AppCompatActivity {
         title = findViewById(R.id.detail_title);
         image = findViewById(R.id.detail_image);
         origin = findViewById(R.id.detail_origin);
+        colors = findViewById(R.id.detail_colors);
         characteristics = findViewById(R.id.detail_characteristics);
 
         gson = new Gson();
@@ -49,6 +53,7 @@ public class DetailActivity extends AppCompatActivity {
             title.setText(apple.getName());
             origin.setText(String.format("\uD83D\uDCCD Origin: %s", apple.getLocation()));
             characteristics.setText(String.format("\uD83D\uDCD3 Characteristics: %s", arrayListToString(apple.getAuxdata().getCharacteristics())));
+            colors.setText(String.format("\uD83C\uDFA8 Colors: %s", arrayListToString(apple.getAuxdata().getColors())));
             new ImageDownloader(image).execute(apple.getAuxdata().getImg());
         }
 

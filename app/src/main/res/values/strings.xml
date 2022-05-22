@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Äppelsorter</string>
     <string name="action_about">About</string>
+    <string name="filter_characteristic">Characteristic</string>
+    <string name="filter_color">Color</string>
+    <string name="filter_none">None</string>
+    <string name="menu_about">About</string>
+    <string name="menu_filter">Filter</string>
 </resources>

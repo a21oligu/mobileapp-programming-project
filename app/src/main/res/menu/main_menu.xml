@@ -5,30 +5,30 @@
     tools:context="com.example.webviewapp.MainActivity">
     <item
         android:orderInCategory="100"
-        android:title="Filter"
+        android:title="@string/menu_filter"
         app:showAsAction="never">
 
         <menu>
             <item
                 android:id="@+id/action_filter_none"
                 android:orderInCategory="1"
-                android:title="None"
+                android:title="@string/filter_none"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/action_filter_color"
                 android:orderInCategory="1"
-                android:title="Color"
+                android:title="@string/filter_color"
                 app:showAsAction="never" />
             <item
-                android:id="@+id/action_filter_za"
+                android:id="@+id/action_filter_characteristic"
                 android:orderInCategory="2"
-                android:title="Z-A"
+                android:title="@string/filter_characteristic"
                 app:showAsAction="never" />
         </menu>
     </item>
     <item
         android:id="@+id/action_about"
         android:orderInCategory="110"
-        android:title="About"
+        android:title="@string/menu_about"
         app:showAsAction="never" />
 </menu>

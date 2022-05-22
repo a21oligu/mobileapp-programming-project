@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
             case R.id.action_filter_color:
                 showFilterDialog("Choose color", "color", new String[] {"red", "green", "yellow"});
                 return true;
-            case R.id.action_filter_za:
+            case R.id.action_filter_characteristic:
                 showFilterDialog("Choose characteristic", "characteristic", appleAdapter.getCharacteristics().toArray(new String[appleAdapter.getCharacteristics().size()]));
                 return true;
         }
