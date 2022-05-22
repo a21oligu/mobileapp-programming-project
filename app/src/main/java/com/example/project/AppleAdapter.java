@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -19,15 +20,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
 
     private ArrayList<Apple> listOfApples;
     private LayoutInflater layoutInflater;
     private OnClickListener onClickListener;
+    private ArrayList<Apple> originalListOfApples;
+    private ArrayList<String> characteristics;
 
     public AppleAdapter(Context context, OnClickListener onClickListener) {
         listOfApples = new ArrayList<>();
+        originalListOfApples = new ArrayList<>();
+        characteristics = new ArrayList<>();
         layoutInflater = LayoutInflater.from(context);
         this.onClickListener = onClickListener;
     }
@@ -83,27 +90,53 @@ public class AppleAdapter extends RecyclerView.Adapter<AppleAdapter.ViewHolder>{
     public void addApples(ArrayList<Apple> apples) {
         try {
             listOfApples.addAll(apples);
+            originalListOfApples.addAll(apples);
+            HashSet<String> set = new HashSet<>();
+            for (Apple apple : originalListOfApples) {
+                set.addAll(apple.getAuxdata().getCharacteristics());
+            }
+            characteristics.addAll(set);
+
             notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void filterApples(final String filter) {
-        Collections.sort(listOfApples, new Comparator<Apple>() {
+    public ArrayList<String> getCharacteristics() {
+        return characteristics;
+    }
 
-            @Override
-            public int compare(Apple apple1, Apple apple2) {
-                switch (filter) {
-                    case "A_Z":
-                        return apple1.getName().toLowerCase().compareTo(apple2.getName().toLowerCase());
-                    case "Z_A":
-                        return apple2.getName().toLowerCase().compareTo(apple1.getName().toLowerCase());
+    public void filterApples(final String type, final String filter) {
+        ArrayList<Apple> temp = new ArrayList<>();
+
+        switch (type) {
+            case "color":
+                System.out.println(1);
+                for (Apple apple : originalListOfApples) {
+                    if (apple.getAuxdata().getColors().contains(filter)) {
+                        temp.add(apple);
+                    }
                 }
-
-                return 0;
-            }
-        });
+                listOfApples.clear();
+                listOfApples.addAll(temp);
+                break;
+            case "characteristic":
+                System.out.println(2);
+                for (Apple apple : originalListOfApples) {
+                    if (apple.getAuxdata().getCharacteristics().contains(filter)) {
+                        temp.add(apple);
+                    }
+                }
+                listOfApples.clear();
+                listOfApples.addAll(temp);
+                break;
+            default:
+                System.out.println(3333);
+                listOfApples.clear();
+                listOfApples.addAll(originalListOfApples);
+                break;
+        }
 
         notifyDataSetChanged();
     }

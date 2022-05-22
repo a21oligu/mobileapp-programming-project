@@ -1,5 +1,8 @@
 package com.example.project;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -59,12 +62,13 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
         Log.d("Response", String.format("Got response from GET: %b", json != null));
 
         try {
-            String filter = sharedPreferences.getString("filter", "default");
+            String filterType = sharedPreferences.getString("type", "none");
+            String filterBy = sharedPreferences.getString("filter", "none");
             ArrayList<Apple> newApples = gson.fromJson(json, type);
             appleAdapter.addApples(newApples);
 
             // Check if saved filter type, if true filter apples
-            if (filter != "default") appleAdapter.filterApples(filter);
+            if (!filterBy.equals("none")) appleAdapter.filterApples(filterType, filterBy);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,8 +87,9 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
         return true;
     }
 
-    private void saveFilter(String filter) {
-        sharedPreferences.edit().putString("filter", filter).apply();
+    private void saveFilter(String type, String filter) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("type", type).putString("filter", filter).apply();
     }
 
     @Override
@@ -95,16 +100,34 @@ public class MainActivity extends AppCompatActivity  implements JsonTask.JsonTas
             case R.id.action_about:
                 startActivity(aboutIntent);
                 return true;
-            case R.id.action_filter_az:
-                appleAdapter.filterApples("A_Z");
-                saveFilter("A_Z");
+            case R.id.action_filter_none:
+                appleAdapter.filterApples("none", "");
+                saveFilter("none", "none");
+                return true;
+            case R.id.action_filter_color:
+                showFilterDialog("Choose color", "color", new String[] {"red", "green", "yellow"});
                 return true;
             case R.id.action_filter_za:
-                appleAdapter.filterApples("Z_A");
-                saveFilter("Z_A");
+                showFilterDialog("Choose characteristic", "characteristic", appleAdapter.getCharacteristics().toArray(new String[appleAdapter.getCharacteristics().size()]));
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showFilterDialog(String title, final String type, final String[] items) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveFilter(type, items[which]);
+                appleAdapter.filterApples(type, items[which]);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

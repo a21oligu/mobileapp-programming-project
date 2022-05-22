@@ -10,9 +10,14 @@
 
         <menu>
             <item
-                android:id="@+id/action_filter_az"
+                android:id="@+id/action_filter_none"
                 android:orderInCategory="1"
-                android:title="A-Z"
+                android:title="None"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_filter_color"
+                android:orderInCategory="1"
+                android:title="Color"
                 app:showAsAction="never" />
             <item
                 android:id="@+id/action_filter_za"
