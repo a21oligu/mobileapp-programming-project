@@ -1,42 +1,78 @@
 
 # Rapport
 
-**Skriv din rapport här!**
+Projektuppgiften handlade om att smida ihop alla de delar vi jobbat med under kursens gång, till större och mer komplett. Appen som utvecklades hämtade och presenterade information om äpplen. Denna information hämtades från en api erhållen av. JSON-datan som appen jobbar med ser ut enligt kodblocket nedan:
 
-_Du kan ta bort all text som finns sedan tidigare_.
-
-## Följande grundsyn gäller dugga-svar:
-
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
-
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
-
+```json
+{
+	"ID": "discovery",
+	"name": "Discovery",
+	"type": "a21oligu",
+	"company": "",
+	"location": "England",
+	"category": "",
+	"size": 0,
+	"cost": 0,
+	"auxdata": {
+		"img": "länk_till_bild.png",
+		"color": [
+			"red",
+			"green"
+		],
+		"characteristics": ["fresh", "hard shell"]
+	}
+}
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
+
+Fältet id är namnet på äpplet i lowercased snakecase. Name är äpplets namn och location äpplets ursprung. I auxdata finns extra fält. Fältet img är en länk till en bildresurs som hämtades och renderades i appen. Auxdata består även av två arrayer med strängar: color och characteristics. Dessa används senare för att filtrera listan av äpplen.
+
+Huvudskärmen av appen består av en RecyclerView. Denna har en Adapter som initerades från en egen klass, AppleAdapter. Denna klass sköter uppdaterande och liknande av RecyclerViewen, men har även egen implementerade fnuktioner för att filtrera listan med äpplen. Varje äpple i denna lista är av klassen Apple. Det är denna klass som json-datan bryts ner till i MainActivity#onPostExecute, se kodblock nedan:
+
+```Java
+public void onPostExecute(String json) {
+    Type type = new TypeToken<ArrayList<Apple>>() {}.getType();
+    
+    ...
+
+    try {
+        ...
+        
+        ArrayList<Apple> newApples = gson.fromJson(json, type);
+        appleAdapter.addApples(newApples);
+        
+        ...
+        
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 }
 ```
 
-Bilder läggs i samma mapp som markdown-filen.
+En viktig del av appen var filtreringsfunktionen. En filtrerings knapp lades till i menu knappen höger om toolbaren. Menyn lades till i menymappen i mappen *res*, och implementerades sedan i MainActivity. Samma meny användes för att lägga till en knapp för about-skärmen. Genom att trycka denna skickas användaren vidare till about-skärmen där den kan läsa om appen. När filtreringsknappen trycks öppnas en lista med olika val av filtreringstyper. Genom att klicka på en av dessa kommer listan filtreras och RecyclerViewen uppdateras. Satta filter sparas även i SharedReferences med följande funktion i MainActivity:
 
-![](android.png)
+```Java
+private void saveFilter(String type, String filter) {
+    SharedPreferences.Editor editor = sharedPreferences.edit(); // från global instans
+    editor.putString("type", type).putString("filter", filter).apply();
+}
+```
 
-Läs gärna:
+En annan funktion som appen har är att vid ett klick på en list_item, skicka användaren till en detaljvy. I denna detaljvy finns information om äpplet som inte presenterades på huvudskärmen.
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+Designen av appen var till stor del planerad redan innan appen programmerades. En prototyp skapades med verktyget figma och låg i grunden för hur vyer och listor var placerade. Detta underlättade arbetet och gav mer tid att lägga fokus på funktionallitet i appen. Skissen som togs fram går att se i bilden nedan:
+
+<img src="https://cdn.discordapp.com/attachments/931726768178626573/979750687523098634/unknown.png" height="500px" />
+
+Värt att notera om just skissen är att små ändringar gjorde under arbetets gång, något jag lät vara oändrat i skissen.
+
+## Implementationsexempel VG
+
+### Det har tidigare i rapporten tagits upp hur jag löste VG kraven. Kommande är de jag inte tagit upp ännu eller mer ingående.
+
+Varje list_item i RecyclreViewen innehåller två Views som manipuleras av json-datan. 
+
+Det går att filtrera äpplen efter färg och karaktärer. Det valde filtret sparas vid val så att det finns kvar när användaren startar upp appen igen. Denna information om filter sparas i SharedPreferences.
+
+Detaljvyn som går att komma till via genom att trycka på ett list_item presenterar mer detaljerad information om äpplet man tryckt på. Här kan även en större bild av äpplet ses. Tillbaka knappen vänster av toolbaren gör det enkelt att återgå till huvudskärmen.
+
+Datan som presenteras i detaljvyn skickas från huvudskärmen genom en intent. Objektet bryts ner till json som sedan "parsas" tillbaka vid detaljvyn.
