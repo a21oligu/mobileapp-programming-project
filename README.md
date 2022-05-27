@@ -76,3 +76,10 @@ Det går att filtrera äpplen efter färg och karaktärer. Det valde filtret spa
 Detaljvyn som går att komma till via genom att trycka på ett list_item presenterar mer detaljerad information om äpplet man tryckt på. Här kan även en större bild av äpplet ses. Tillbaka knappen vänster av toolbaren gör det enkelt att återgå till huvudskärmen.
 
 Datan som presenteras i detaljvyn skickas från huvudskärmen genom en intent. Objektet bryts ner till json som sedan "parsas" tillbaka vid detaljvyn.
+
+### Bilder från appen
+
+<img src="app_main" height="400px" />
+<img src="app_filter" height="400px" />
+<img src="app_detail" height="400px" />
+<img src="app_about" height="400px" />
