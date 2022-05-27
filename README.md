@@ -77,9 +77,16 @@ Detaljvyn som går att komma till via genom att trycka på ett list_item present
 
 Datan som presenteras i detaljvyn skickas från huvudskärmen genom en intent. Objektet bryts ner till json som sedan "parsas" tillbaka vid detaljvyn.
 
-### Bilder från appen
+## Bilder från appen
 
-<img src="app_main" height="400px" />
-<img src="app_filter" height="400px" />
-<img src="app_detail" height="400px" />
-<img src="app_about" height="400px" />
+### Huvudskärm
+<img src="app_main.png" height="400px" />
+
+### Filter i bruk
+<img src="app_filter.png" height="400px" />
+
+### Detaljvy
+<img src="app_detail.png" height="400px" />
+
+### Om-skärmen
+<img src="app_about.png" height="400px" />
